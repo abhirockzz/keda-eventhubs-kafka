@@ -1,0 +1,15 @@
+apiVersion: keda.k8s.io/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: eventhub-kafka-triggerauth
+spec:
+  secretTargetRef:
+    - parameter: authMode
+      name: eventhub-kafka-credentials
+      key: authMode
+    - parameter: username
+      name: eventhub-kafka-credentials
+      key: username
+    - parameter: password
+      name: eventhub-kafka-credentials
+      key: password

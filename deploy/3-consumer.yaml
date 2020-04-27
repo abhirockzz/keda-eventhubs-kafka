@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      containers:
+        - name: kafka-consumer
+          image: abhirockzz/kafka-consumer
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: KAFKA_EVENTHUB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eventhub-kafka-credentials
+                  key: password
+            - name: KAFKA_EVENTHUB_ENDPOINT
+              value: <EVENTHUB_NAMESPACE>.windows.net:9093
+            - name: KAFKA_EVENTHUB_CONSUMER_GROUP
+              value: $Default
+            - name: KAFKA_EVENTHUB_TOPIC
+              value: <EVENTHUB_TOPIC>

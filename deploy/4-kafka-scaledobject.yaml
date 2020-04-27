@@ -1,0 +1,22 @@
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject
+  namespace: default
+  labels:
+    deploymentName: kafka-consumer
+spec:
+  scaleTargetRef:
+    deploymentName: kafka-consumer
+  pollingInterval: 15
+  cooldownPeriod: 100
+  maxReplicaCount: 10
+  triggers:
+    - type: kafka
+      metadata:
+        bootstrapServers: <EVENTHUB_NAMESPACE>.windows.net:9093
+        consumerGroup: $Default
+        topic: <EVENTHUB_TOPIC>
+        lagThreshold: "10"
+      authenticationRef:
+        name: eventhub-kafka-triggerauth
